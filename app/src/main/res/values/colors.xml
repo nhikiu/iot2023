@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#585858</color>
+    <color name="colorPrimaryDark">#585858</color>
+    <color name="colorAccent">#F3D2CE</color>
+    <color name="image_background">#A9F676B5</color>
+    <color name="text_sellected">#EA4630</color>
+    <color name="text_unsellect">#79747E</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="tranparent">#00000000</color>
+
+<!--    color by position-->
+    <color name="pos_0">#FFDB93</color>
+    <color name="pos_1">#FFB350</color>
+    <color name="pos_2">#01ACC8</color>
+    <color name="pos_3">#FF9B98</color>
+    <color name="pos_4">#FEB9FF</color>
+    <color name="pos_5">#B4B7D5</color>
+    <color name="pos_6">#FFF7AB</color>
+    <color name="pos_7">#4BC2BE</color>
+</resources>

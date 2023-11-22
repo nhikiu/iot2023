@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "169801046193",
+    "firebase_url": "https://dht11-mq2-default-rtdb.firebaseio.com",
+    "project_id": "dht11-mq2",
+    "storage_bucket": "dht11-mq2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:169801046193:android:46e91eb4ce9f14a2be2a90",
+        "android_client_info": {
+          "package_name": "com.nhidn.iot"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCr-7tph598hXrxSa_m0G0-MQYfxdrYdIE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

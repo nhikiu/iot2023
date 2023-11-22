@@ -1,0 +1,204 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-platform-android'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
+}
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.firebase-perf'
+
+android {
+    compileSdkVersion 33
+    buildToolsVersion '33.0.0'
+    defaultConfig {
+        applicationId 'com.nhidn.iot'
+        minSdkVersion 22
+        targetSdkVersion 33
+        versionCode 11
+        versionName "1.1"
+        vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "com.task.CustomTestRunner"
+    }
+    buildFeatures {
+        viewBinding = true
+    }
+    dataBinding {
+        enabled = true
+    }
+
+    buildFeatures { dataBinding = true }
+    buildTypes {
+        debug {
+            debuggable true
+
+        }
+        release {
+            debuggable false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+//            signingConfig signingConfigs.release
+
+        }
+    }
+    flavorDimensions "default"
+    productFlavors {
+        dev {
+            dimension = 'default'
+        }
+        prod {
+            dimension = 'default'
+        }
+    }
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+    configurations.all {
+        resolutionStrategy {
+            exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-debug"
+
+        }
+    }
+    defaultConfig {
+        testInstrumentationRunnerArguments clearPackageData: 'true'
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+    android {
+        sourceSets {
+            String sharedTestDir = 'src/sharedTest/resources'
+            test {
+                resources.srcDirs += sharedTestDir
+            }
+            androidTest {
+                resources.srcDirs += sharedTestDir
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation "androidx.annotation:annotation:$annotationVersion"
+    implementation "com.squareup.picasso:picasso:$picassoVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$livedata_ktx"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    androidTestImplementation "androidx.test.ext:junit-ktx:$androidXJunitVersion"
+    /**-------------------testing libs------------------------------------------**/
+    //UI Testing , AndroidJUnitRunner and JUnit Rules &Espresso dependencies
+    //junit 5
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+    testImplementation "io.mockk:mockk:$mockVersion"
+    androidTestImplementation "org.assertj:assertj-core:$assertjVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoIntentsVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesTestVersion"
+    implementation "androidx.arch.core:core-testing:$coreTestingVersion"
+    implementation "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
+    implementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+    /**-------------------------------------------------------------**/
+    //android support
+    implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation "com.google.android.material:material:$materialVersion"
+    // retrofit
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+    implementation "com.squareup.moshi:moshi:$moshiVersion"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttpInterceptorVersion"
+    implementation("com.github.bumptech.glide:glide:$glid") {
+        exclude group: "com.android.support"
+    }
+    implementation "androidx.activity:activity-ktx:$activityKtxVersion"
+    // Hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_viewmodels"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    implementation project(':permissionx')
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.8'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    //animation
+    implementation 'com.github.florent37:viewanimator:1.1.0'
+    //constraintlayout
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    //navigation
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+
+    implementation 'com.github.Theophrast:SquareImageView:1.0.1'
+
+    // save cache
+    implementation "com.orhanobut:hawk:2.0.1"
+
+    // CameraX dependencies (first release for video is: "1.1.0-alpha10")
+    def camerax_version = "1.1.0-beta01"
+    // The following line is optional, as the core library is included indirectly by camera-camera2
+    implementation "androidx.camera:camera-core:${camerax_version}"
+    implementation "androidx.camera:camera-camera2:${camerax_version}"
+    implementation "androidx.camera:camera-lifecycle:${camerax_version}"
+    implementation "androidx.camera:camera-video:${camerax_version}"
+    implementation "androidx.camera:camera-view:${camerax_version}"
+    implementation "androidx.concurrent:concurrent-futures-ktx:1.1.0"
+
+    //download
+    implementation "com.github.ssseasonnn:RxDownload:1.1.4"
+
+    //ffmpeg
+    implementation 'com.github.yangjie10930:EpMedia:v1.0.1'
+
+    //circleimageview
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //
+    def utilsVersion = "1.2.9"
+    implementation "com.github.ntduc-let.Utils:FileUtils:$utilsVersion"
+    implementation "com.github.ntduc-let.Utils:DateTimeUtils:$utilsVersion"
+    implementation "com.github.ntduc-let.Utils:RecyclerViewUtils:$utilsVersion"
+
+    //
+    def mediaVersion = "1.0.0-alpha03"
+    implementation "androidx.media3:media3-exoplayer:$mediaVersion"
+    implementation "androidx.media3:media3-ui:$mediaVersion"
+    implementation "androidx.media3:media3-exoplayer-dash:$mediaVersion"
+
+    //
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.25'
+
+    // firebase notification
+
+    implementation platform('com.google.firebase:firebase-bom:31.0.2')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-config-ktx'
+    implementation 'com.google.firebase:firebase-perf-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+
+    implementation("com.google.firebase:firebase-database")
+
+    //
+    implementation 'com.airbnb.android:lottie:5.2.0'
+    //ads
+//    implementation "prox-lib:prox-utils-multiple-mediation:1.0.6.0"
+
+    //
+    implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
+
+
+}
+kapt {
+    correctErrorTypes true
+}
+
