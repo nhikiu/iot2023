@@ -19,4 +19,8 @@
     <color name="pos_5">#B4B7D5</color>
     <color name="pos_6">#FFF7AB</color>
     <color name="pos_7">#4BC2BE</color>
+
+    <color name="red">#FF0000 </color>
+    <color name="green">#00FF00</color>
+    <color name="blue">#0000FF</color>
 </resources>

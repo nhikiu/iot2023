@@ -47,7 +47,7 @@ class SplashActivity : BaseActivity() {
         val fragmentStateAdapter = ViewPagerAdapter(this, fragmentList)
 
         binding.viewpager.adapter = fragmentStateAdapter
-//        binding.viewpager.offscreenPageLimit = 1
+        binding.viewpager.offscreenPageLimit = 3
         binding.viewpager.isUserInputEnabled = false
 
         // connect tablayout, viewpager

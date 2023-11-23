@@ -50,4 +50,8 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">14dp</item>
     </style>
+    <style name="text_bold_20">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20dp</item>
+    </style>
 </resources>

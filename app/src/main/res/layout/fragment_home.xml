@@ -39,10 +39,7 @@
         app:layout_constraintBottom_toBottomOf="@id/progress_circular_temperature"
         app:layout_constraintStart_toStartOf="@id/progress_circular_temperature"
         app:layout_constraintEnd_toEndOf="@id/progress_circular_temperature">
-        <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@drawable/ic_temperature"/>
+
         <TextView
             android:id="@+id/tv_temperature"
             android:text="60"
@@ -52,6 +49,11 @@
             android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_celsius"/>
     </LinearLayout>
 
     <ProgressBar
@@ -59,8 +61,8 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:indeterminateOnly="false"
-        android:progressDrawable="@drawable/custom_progress_bar"
-        android:progress="60"
+        android:progressDrawable="@drawable/custom_progress_bar_humidity"
+        android:progress="23"
         app:layout_constraintTop_toBottomOf="@id/progress_circular_temperature"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -76,13 +78,10 @@
         app:layout_constraintBottom_toBottomOf="@id/progress_circular_humidity"
         app:layout_constraintStart_toStartOf="@id/progress_circular_humidity"
         app:layout_constraintEnd_toEndOf="@id/progress_circular_humidity">
-        <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@drawable/ic_temperature"/>
+
         <TextView
             android:id="@+id/tv_humidity"
-            android:text="60"
+            android:text="23%"
             style="@style/text_style_36"
             android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -91,22 +90,63 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <Switch
-        android:id="@+id/switch_led"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="LED"
-        android:checked="false"
-        app:layout_constraintTop_toBottomOf="@id/progress_circular_humidity"
-        app:layout_constraintStart_toStartOf="parent"/>
 
-    <Switch
-        android:id="@+id/switch_buzzer"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Buzzer"
-        android:checked="false"
-        app:layout_constraintTop_toBottomOf="@id/progress_circular_humidity"
-        app:layout_constraintStart_toEndOf="@id/switch_led"/>
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/progress_circular_humidity">
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="150dp"
+            android:paddingHorizontal="50dp"
+            android:layout_marginEnd="@dimen/space_24x"
+            android:layout_marginStart="@dimen/space_8x"
+            android:background="@drawable/bg_outline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/progress_circular_humidity">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LED"
+                style="@style/text_bold_20"
+                android:layout_marginTop="@dimen/space_8x"
+                android:textColor="@color/black"
+                android:layout_gravity="top|center"/>
+            <ImageView
+                android:id="@+id/iv_on_off_led"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_off" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:paddingHorizontal="50dp"
+            android:layout_marginEnd="@dimen/space_8x"
+            android:background="@drawable/bg_outline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/progress_circular_humidity">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BUZZER"
+                style="@style/text_bold_20"
+                android:layout_marginTop="@dimen/space_8x"
+                android:textColor="@color/black"
+                android:layout_gravity="top|center"/>
+            <ImageView
+                android:id="@+id/iv_on_off_buzzer"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_off"/>
+        </FrameLayout>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
