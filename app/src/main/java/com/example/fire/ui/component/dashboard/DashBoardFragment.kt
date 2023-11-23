@@ -150,6 +150,7 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding>() {
         lineChart.data = lineData
         lineChart.description.isEnabled = false
         lineChart.invalidate()
+
     }
 
     private fun setHumidityChartView() {
