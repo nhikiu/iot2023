@@ -46,4 +46,8 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">36dp</item>
     </style>
+    <style name="text_bold_14">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14dp</item>
+    </style>
 </resources>

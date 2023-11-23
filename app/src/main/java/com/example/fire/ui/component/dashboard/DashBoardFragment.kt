@@ -148,7 +148,7 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding>() {
         val lineChart = binding.chartTemperature
         val lineData = LineData(dataSet)
         lineChart.data = lineData
-        lineChart.isEnabled = false
+        lineChart.description.isEnabled = false
         lineChart.invalidate()
     }
 

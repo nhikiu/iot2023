@@ -1,6 +1,5 @@
-package com.example.fire.ui.component
+package com.example.fire.ui.component.home
 
-import android.os.Bundle
 import android.util.Log
 import androidx.navigation.fragment.findNavController
 import com.example.fire.*
@@ -115,11 +114,6 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
             )
 
             senserRef.updateChildren(sensorData)
-        }
-
-        binding.btnSend.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToDashBoardFragment()
-            findNavController().navigate(action)
         }
     }
 }
