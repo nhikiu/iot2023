@@ -1,7 +1,6 @@
 package com.example.fire.ui.component.home
 
 import android.util.Log
-import androidx.navigation.fragment.findNavController
 import com.example.fire.*
 import com.example.fire.data.dto.iot.MyIoT
 import com.example.fire.databinding.FragmentHomeBinding
@@ -44,11 +43,12 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
                         }
 
                     }
-                    myIoTList.filter { it.coConcentration != null && it.humidity != null && it.humidity.isNotEmpty()
-                            && it.time != null && it.time.isNotEmpty() && it.temperature != null && it.temperature.isNotEmpty()}
+                    myIoTList.filter { it.coConcentration != null && it.humidity != null && it.humidity.isNotEmpty() && it.humidity.trim().lowercase() != "nan"
+                            && it.time != null && it.time.isNotEmpty() && it.time.trim().lowercase() != "nan"
+                            && it.temperature != null && it.temperature.isNotEmpty() && it.temperature.trim().lowercase() != "nan"}
                     val myIoT = myIoTList.last()
-                    val temperature = myIoT.temperature?.toFloat()?.toInt() ?: 0
-                    val humidity = myIoT.humidity?.toFloat()?.toInt() ?: 0
+                    val temperature = myIoT.temperature?.toFloatOrNull()?.toInt() ?: 0
+                    val humidity = myIoT.humidity?.toFloatOrNull()?.toInt() ?: 0
                     binding.tvTemperature.text = "$temperature"
                     binding.tvHumidity.text = "$humidity%"
                     binding.progressCircularTemperature.progress = temperature

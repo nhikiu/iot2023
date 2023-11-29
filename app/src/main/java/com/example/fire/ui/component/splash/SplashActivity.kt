@@ -1,5 +1,6 @@
 package com.example.fire.ui.component.splash
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.ImageView
@@ -7,6 +8,7 @@ import android.widget.TextView
 import com.example.fire.*
 import com.example.fire.data.dto.iot.FragmentData
 import com.example.fire.databinding.SplashLayoutBinding
+import com.example.fire.service.FirebaseService
 import com.example.fire.ui.base.BaseActivity
 import com.example.fire.ui.component.home.HomeFragment
 import com.example.fire.ui.component.dashboard.DashBoardFragment
@@ -28,6 +30,8 @@ class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        startService(Intent(this, FirebaseService::class.java))
 
         fragmentList = listOf(
             FragmentData(

@@ -1,28 +1,20 @@
-package com.example.fire.ui.component.dashboard
+package com.example.fire.ui. component.dashboard
 
 import android.graphics.Color
 import android.util.Log
 import com.example.fire.DEMO
-import com.example.fire.R
 import com.example.fire.data.dto.iot.MyIoT
 import com.example.fire.databinding.FragmentDashBoardBinding
 import com.example.fire.ui.base.BaseFragment
-import com.github.mikephil.charting.components.AxisBase
-import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import dagger.hilt.android.AndroidEntryPoint
-import java.sql.Timestamp
-import java.time.*
-import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class DashBoardFragment : BaseFragment<FragmentDashBoardBinding>() {
@@ -63,8 +55,6 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding>() {
 
     override fun initData() {
         super.initData()
-        Log.e("TAG", "Start time of current day: ${getStartTimeOfCurrentDay()}", )
-
         getTemperatureList()
     }
 
@@ -72,20 +62,27 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding>() {
         val database = FirebaseDatabase.getInstance()
 
         val demoRef = database.getReference(DEMO)
-        val query = demoRef.orderByKey().limitToLast(20)
+        val query = demoRef.orderByKey()
         query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
+                    myIoTList = mutableListOf()
                     for (childSnapshot in snapshot.children) {
-                        val key = childSnapshot.key
+//                        val key = childSnapshot.key
                         val value = childSnapshot.getValue(MyIoT::class.java)
 
-                        // Xử lý dữ liệu tại đây, ví dụ in ra màn hình
                         if (value != null) {
                             myIoTList.add(value)
                         }
-
                     }
+                    myIoTList = myIoTList.filter { it.time != null && it.time.isNotEmpty() && it.time.trim().lowercase() != "nan"
+                            && it.temperature != null && it.temperature.isNotEmpty() && it.temperature.trim().lowercase() != "nan"
+                            && it.humidity != null && it.humidity.isNotEmpty() && it.humidity.trim().lowercase() != "nan"
+                            && it.coConcentration != null}.toMutableList()
+                    myIoTList = myIoTList.filter {
+                        ((it.temperature?.toFloat() ?: 0F) > 0F
+                                && (it.humidity?.toFloat() ?: 0F) > 0F)
+                    }.toMutableList()
                     setTemperatureChartView()
                     setHumidityChartView()
                     setCOChartView()
@@ -101,28 +98,17 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding>() {
         })
     }
 
-    private fun getStartTimeOfCurrentDay() : Long{
-        // Lấy thời gian hiện tại ở múi giờ Việt Nam
-        val zoneIdVietnam = ZoneId.of("Asia/Ho_Chi_Minh")
-        val currentDateTimeVietnam = ZonedDateTime.now(zoneIdVietnam)
-
-        // Chuyển đổi thành thời gian bắt đầu của ngày
-        val startOfDayVietnam = currentDateTimeVietnam.toLocalDate().atStartOfDay(zoneIdVietnam)
-
-        // Chuyển đổi thành timestamp (giây từ epoch)
-        val timestampVN = startOfDayVietnam.toEpochSecond()
-
-        Log.d("TAG", "Current time vietname: $timestampVN")
-
-        // Chuyển đổi ngày thành thời điểm bắt đầu của ngày (00:00:00)
-        Log.e("TAG", "getStartTimeOfCurrentDay: ${System.currentTimeMillis()/1000}", )
-
-        // Chuyển đổi thời điểm thành timestamp (giây từ epoch)
-        return timestampVN
-    }
+//    private fun getStartTimeOfCurrentDay() : Long{
+//        val zoneIdVietnam = ZoneId.of("Asia/Ho_Chi_Minh")
+//        val currentDateTimeVietnam = ZonedDateTime.now(zoneIdVietnam)
+//        val startOfDayVietnam = currentDateTimeVietnam.toLocalDate().atStartOfDay(zoneIdVietnam)
+//        val timestampVN = startOfDayVietnam.toEpochSecond()
+//        return timestampVN
+//    }
 
     private fun setTemperatureChartView() {
-        val result = myIoTList.filter { it.time != null && it.time.isNotEmpty()  && it.temperature != null&& it.temperature.isNotEmpty()}
+        val result = myIoTList.filter { it.time != null && it.time.isNotEmpty() && it.time.trim().lowercase() != "nan"
+                && it.temperature != null && it.temperature.isNotEmpty() && it.temperature.trim().lowercase() != "nan"}
         val lastTenValues = if (result.size > 10) {
             result.subList(result.size - 10, result.size)
         } else {
@@ -154,7 +140,8 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding>() {
     }
 
     private fun setHumidityChartView() {
-        val result = myIoTList.filter { it.time != null && it.time.isNotEmpty()  && it.humidity != null&& it.humidity.isNotEmpty()}
+        val result = myIoTList.filter { it.time != null && it.time.isNotEmpty() && it.time.trim().lowercase() != "nan"
+                && it.humidity != null&& it.humidity.isNotEmpty() && it.humidity.trim().lowercase() != "nan"}
         val lastTenValues = if (result.size > 10) {
             result.subList(result.size - 10, result.size)
         } else {
@@ -185,7 +172,8 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding>() {
     }
 
     private fun setCOChartView() {
-        val result = myIoTList.filter { it.time != null && it.time.isNotEmpty() && it.coConcentration != null}
+        val result = myIoTList.filter { it.time != null && it.time.isNotEmpty() && it.time.trim().lowercase() != "nan"
+                && it.coConcentration != null}
         val lastTenValues = if (result.size > 10) {
             result.subList(result.size - 10, result.size)
         } else {
@@ -216,23 +204,21 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding>() {
         lineChart.invalidate()
     }
 
-
-
-    private fun getHourInVietnam(timestampString: String?): Int {
-        if (timestampString != null && timestampString.isNotEmpty()) {
-            val timestamp = Timestamp(timestampString.toLong() * 1000)
-            return timestamp.minutes
-        }
-        return 0
-    }
-
-    fun convertTimestampToTime(timestamp: Long): String {
-        // Chuyển timestamp thành đối tượng Instant
-        val instant = Instant.ofEpochSecond(timestamp)
-
-        // Định dạng đối tượng Instant thành chuỗi giờ:phút:giây
-        val formatter = DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneId.systemDefault())
-        return formatter.format(instant)
-    }
+//    private fun getHourInVietnam(timestampString: String?): Int {
+//        if (timestampString != null && timestampString.isNotEmpty()) {
+//            val timestamp = Timestamp(timestampString.toLong() * 1000)
+//            return timestamp.minutes
+//        }
+//        return 0
+//    }
+//
+//    fun convertTimestampToTime(timestamp: Long): String {
+//        // Chuyển timestamp thành đối tượng Instant
+//        val instant = Instant.ofEpochSecond(timestamp)
+//
+//        // Định dạng đối tượng Instant thành chuỗi giờ:phút:giây
+//        val formatter = DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneId.systemDefault())
+//        return formatter.format(instant)
+//    }
 
 }
