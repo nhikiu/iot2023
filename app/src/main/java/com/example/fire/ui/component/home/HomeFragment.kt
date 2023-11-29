@@ -35,7 +35,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     for (childSnapshot in snapshot.children) {
-                        val key = childSnapshot.key
+//                        val key = childSnapshot.key
                         val value = childSnapshot.getValue(MyIoT::class.java)
 
                         if (value != null) {

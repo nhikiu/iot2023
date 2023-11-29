@@ -28,9 +28,9 @@ class FirebaseService : Service() {
         createNotificationChannel()
 
         val notification: Notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Firebase Service")
-            .setContentText("Listening for Firebase changes")
-            .setSmallIcon(R.drawable.ic_iot)
+            .setContentTitle("Hệ thống báo cháy")
+            .setContentText("Thông báo lắng nghe trạng thái cháy")
+            .setSmallIcon(R.drawable.ic_notification)
             .build()
 
         startForeground(1, notification)
@@ -86,8 +86,8 @@ class FirebaseService : Service() {
         )
 
         val notification: Notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Firebase Notification")
-            .setContentText("Firebase value is true")
+            .setContentTitle("Phát hiện lửa")
+            .setContentText("Còi và đèn cảnh báo đang kêu")
             .setSmallIcon(R.drawable.ic_iot)
             .setContentIntent(pendingIntent)
             .build()

@@ -39,18 +39,21 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding>() {
         binding.chartTemperature.axisLeft.axisMaximum = 100f
         binding.chartTemperature.xAxis.position = XAxis.XAxisPosition.BOTTOM
         binding.chartTemperature.xAxis.granularity = 1f
+        binding.chartTemperature.axisRight.isEnabled = false
 
         binding.chartHumidity.xAxis.setLabelCount(10, true)
         binding.chartHumidity.axisLeft.axisMinimum = 0f
         binding.chartHumidity.axisLeft.axisMaximum = 100f
         binding.chartHumidity.xAxis.position = XAxis.XAxisPosition.BOTTOM
         binding.chartHumidity.xAxis.granularity = 1f
+        binding.chartHumidity.axisRight.isEnabled = false
 
         binding.chartCo.xAxis.setLabelCount(10, true)
         binding.chartCo.axisLeft.axisMinimum = 0f
         binding.chartCo.axisLeft.axisMaximum = 100f
         binding.chartCo.xAxis.position = XAxis.XAxisPosition.BOTTOM
         binding.chartCo.xAxis.granularity = 1f
+        binding.chartCo.axisRight.isEnabled = false
     }
 
     override fun initData() {

@@ -68,6 +68,7 @@
                 android:resource="@xml/paths" />
         </provider>
 
+        <service android:name=".service.FirebaseService"/>
 
     </application>
 
