@@ -4,4 +4,5 @@ package com.example.fire.data.dto.iot
                   val fireDetected: Boolean? = false,
                   val humidity: String? = "",
                   val temperature: String? = "",
-                  val time: String? = "")
+                  val time: String? = "",
+ val gas: Long? = 0)

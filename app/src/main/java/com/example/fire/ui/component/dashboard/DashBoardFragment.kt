@@ -50,7 +50,7 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding>() {
 
         binding.chartCo.xAxis.setLabelCount(10, true)
         binding.chartCo.axisLeft.axisMinimum = 0f
-        binding.chartCo.axisLeft.axisMaximum = 100f
+        binding.chartCo.axisLeft.axisMaximum = 10000f
         binding.chartCo.xAxis.position = XAxis.XAxisPosition.BOTTOM
         binding.chartCo.xAxis.granularity = 1f
         binding.chartCo.axisRight.isEnabled = false
@@ -74,8 +74,18 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding>() {
 //                        val key = childSnapshot.key
                         val value = childSnapshot.getValue(MyIoT::class.java)
 
-                        if (value != null) {
-                            myIoTList.add(value)
+                        val dataMap = childSnapshot.value as? Map<String, Any>
+                        if (dataMap != null) {
+                            val coConcentration = dataMap["coConcentration"] as Long?
+                            val fireDetected = dataMap["fireDetected"] as Boolean?
+                            val gas = dataMap["gas"] as Long?
+                            val humidity = dataMap["humidity"] as String?
+                            val temperature = dataMap["temperature"] as String?
+                            myIoTList.add(MyIoT(coConcentration, fireDetected, humidity, temperature, childSnapshot.key, gas))
+
+//                            if (value != null) {
+//                            myIoTList.add(value)
+//                        }
                         }
                     }
                     myIoTList = myIoTList.filter { it.time != null && it.time.isNotEmpty() && it.time.trim().lowercase() != "nan"
@@ -117,6 +127,7 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding>() {
         } else {
             result
         }
+        Log.e("TAG", "Temperatures: $lastTenValues", )
 
         val entries = lastTenValues.mapIndexed { index, item ->
             Entry(index.toFloat(), item.temperature!!.toFloat())
@@ -150,6 +161,7 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding>() {
         } else {
             result
         }
+        Log.e("TAG", "Humidity: $lastTenValues", )
 
         val entries = lastTenValues.mapIndexed { index, item ->
             Entry(index.toFloat(), item.humidity!!.toFloat())
@@ -175,13 +187,16 @@ class DashBoardFragment : BaseFragment<FragmentDashBoardBinding>() {
     }
 
     private fun setCOChartView() {
+        Log.e("TAG", "List: $myIoTList", )
         val result = myIoTList.filter { it.time != null && it.time.isNotEmpty() && it.time.trim().lowercase() != "nan"
-                && it.coConcentration != null}
+                && it.coConcentration != null && it.coConcentration > 0}
+        Log.e("TAG", "setCOChartView: $result", )
         val lastTenValues = if (result.size > 10) {
             result.subList(result.size - 10, result.size)
         } else {
             result
         }
+        Log.e("TAG", "CO: $lastTenValues", )
 
         val entries = lastTenValues.mapIndexed { index, item ->
             Entry(index.toFloat(), item.coConcentration!!.toFloat())

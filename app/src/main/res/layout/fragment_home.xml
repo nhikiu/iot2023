@@ -24,7 +24,7 @@
         android:layout_height="200dp"
         android:indeterminateOnly="false"
         android:progressDrawable="@drawable/custom_progress_bar"
-        android:progress="60"
+        android:progress="20"
         app:layout_constraintTop_toBottomOf="@id/tv_app_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,8 +42,8 @@
 
         <TextView
             android:id="@+id/tv_temperature"
-            android:text="60"
-            android:textSize="36sp"
+            android:text="20"
+            android:textSize="@dimen/font_24x"
             android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/black"
@@ -62,7 +62,7 @@
         android:layout_height="200dp"
         android:indeterminateOnly="false"
         android:progressDrawable="@drawable/custom_progress_bar_humidity"
-        android:progress="23"
+        android:progress="70"
         app:layout_constraintTop_toBottomOf="@id/progress_circular_temperature"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -81,7 +81,7 @@
 
         <TextView
             android:id="@+id/tv_humidity"
-            android:text="23%"
+            android:text="70%"
             style="@style/text_style_36"
             android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"

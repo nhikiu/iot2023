@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment: BaseFragment<FragmentHomeBinding>() {
     private lateinit var myIoTList: MutableList<MyIoT>
     private var isOnLed: Boolean = false
-    private var isOnBuzzer = false
+    private var isOnBuzzer: Boolean = false
 
     override fun getDataBinding() = FragmentHomeBinding.inflate(layoutInflater)
 
@@ -37,22 +37,32 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
                     for (childSnapshot in snapshot.children) {
 //                        val key = childSnapshot.key
                         val value = childSnapshot.getValue(MyIoT::class.java)
+                        val dataMap = childSnapshot.value as? Map<String, Any>
+                        if (dataMap != null) {
+                            val coConcentration = dataMap["coConcentration"] as Long?
+                            val fireDetected = dataMap["fireDetected"] as Boolean?
+                            val gas = dataMap["gas"] as Long?
+                            val humidity = dataMap["humidity"] as String?
+                            val temperature = dataMap["temperature"] as String?
+                            myIoTList.add(MyIoT(coConcentration, fireDetected, humidity, temperature, childSnapshot.key, gas))
 
-                        if (value != null) {
-                            myIoTList.add(value)
+//                            if (value != null) {
+//                              myIoTList.add(value)
+//                            }
                         }
-
                     }
                     myIoTList.filter { it.coConcentration != null && it.humidity != null && it.humidity.isNotEmpty() && it.humidity.trim().lowercase() != "nan"
                             && it.time != null && it.time.isNotEmpty() && it.time.trim().lowercase() != "nan"
                             && it.temperature != null && it.temperature.isNotEmpty() && it.temperature.trim().lowercase() != "nan"}
                     val myIoT = myIoTList.last()
-                    val temperature = myIoT.temperature?.toFloatOrNull()?.toInt() ?: 0
+                    val temperature = myIoT.temperature?.toFloatOrNull() ?: 0.0F
                     val humidity = myIoT.humidity?.toFloatOrNull()?.toInt() ?: 0
-                    binding.tvTemperature.text = "$temperature"
-                    binding.tvHumidity.text = "$humidity%"
-                    binding.progressCircularTemperature.progress = temperature
-                    binding.progressCircularHumidity.progress = humidity
+                    if (temperature > 0 && humidity > 0) {
+                        binding.tvTemperature.text = "$temperature"
+                        binding.tvHumidity.text = "$humidity%"
+                        binding.progressCircularTemperature.progress = temperature.toInt()
+                        binding.progressCircularHumidity.progress = humidity
+                    }
                 } else {
                     Log.e("TAG", "onDataChange: Not exist",)
                 }
@@ -94,6 +104,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
         senserRef.child(BUZZER).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val value = snapshot.getValue(Boolean::class.java) ?: false
+                isOnBuzzer = value
                 checkBuzzerOnOff()
                 Log.e("TAG", "onDataChange: BUZZer: $value", )
             }
