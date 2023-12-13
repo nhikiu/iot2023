@@ -18,6 +18,60 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
+    <LinearLayout
+        android:id="@+id/llDetect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_app_name"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/space_8x"
+        android:background="@drawable/bg_corner_12_outline"
+        android:padding="@dimen/space_24x">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_fire"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detect"
+                app:layout_constraintTop_toBottomOf="@id/tv_app_name"/>
+            <TextView
+                android:id="@+id/tvDetect"
+                android:text="@string/no"
+                android:fontFamily="@font/interblack"
+                android:textSize="24sp"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_temperature_title"
+        android:fontFamily="@font/interblack"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:text="@string/tempeature"
+        android:layout_marginTop="25dp"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintTop_toBottomOf="@id/llDetect"
+        app:layout_constraintStart_toStartOf="@id/progress_circular_temperature"
+        app:layout_constraintEnd_toEndOf="@id/progress_circular_temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <ProgressBar
         android:id="@+id/progress_circular_temperature"
         android:layout_width="200dp"
@@ -25,9 +79,8 @@
         android:indeterminateOnly="false"
         android:progressDrawable="@drawable/custom_progress_bar"
         android:progress="20"
-        app:layout_constraintTop_toBottomOf="@id/tv_app_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_temperature_title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         />
     <LinearLayout
         android:id="@+id/container_temperature"
@@ -56,6 +109,20 @@
             android:src="@drawable/ic_celsius"/>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_humidity_title"
+        android:fontFamily="@font/interblack"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:text="@string/humidity"
+        android:layout_marginTop="25dp"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintTop_toBottomOf="@id/llDetect"
+        app:layout_constraintStart_toStartOf="@id/progress_circular_humidity"
+        app:layout_constraintEnd_toEndOf="@id/progress_circular_humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <ProgressBar
         android:id="@+id/progress_circular_humidity"
         android:layout_width="200dp"
@@ -63,8 +130,7 @@
         android:indeterminateOnly="false"
         android:progressDrawable="@drawable/custom_progress_bar_humidity"
         android:progress="70"
-        app:layout_constraintTop_toBottomOf="@id/progress_circular_temperature"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_humidity_title"
         app:layout_constraintEnd_toEndOf="parent"
         />
 

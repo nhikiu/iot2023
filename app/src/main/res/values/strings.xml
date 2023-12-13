@@ -43,4 +43,9 @@
     <string name="turn_off_alarm">Để tắt đèn và còi, vui lòng bấm nút "Tắt" bên dưới</string>
     <string name="cancel">Huỷ</string>
     <string name="turn_off">Tắt</string>
+    <string name="tempeature">Nhiệt độ</string>
+    <string name="humidity">Độ ẩm</string>
+    <string name="detect">Phát hiện lửa</string>
+    <string name="no">Không</string>
+    <string name="yes">Có</string>
 </resources>

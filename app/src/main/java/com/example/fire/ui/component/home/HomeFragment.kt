@@ -180,11 +180,14 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
 
     private fun checkDetectFire() {
         if (isOnBuzzer && isOnLed) {
+            binding.tvDetect.text = resources.getString(R.string.yes)
             if (dialogDetectFire != null && !dialogDetectFire!!.isShowing)
             dialogDetectFire?.apply {
                 setOnDismissListener {}
                 show()
             }
+        } else {
+            binding.tvDetect.text = resources.getString(R.string.no)
         }
     }
 
