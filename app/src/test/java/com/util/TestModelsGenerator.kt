@@ -1,5 +1,6 @@
 package com.util
 
+import com.example.fire.data.remote.moshiFactories.MyKotlinJsonAdapterFactory
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -8,11 +9,6 @@ import com.task.data.dto.recipes.RecipesItem
 import com.task.data.remote.moshiFactories.MyKotlinJsonAdapterFactory
 import java.io.File
 import java.lang.reflect.Type
-
-
-/**
- * Created by TruyenIT
- */
 
 class TestModelsGenerator {
     private var recipes: Recipes = Recipes(arrayListOf())

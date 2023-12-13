@@ -13,10 +13,6 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * Created by TruyenIT
- */
-
 private const val timeoutRead = 30   //In seconds
 private const val contentType = "Content-Type"
 private const val contentTypeValue = "application/json"

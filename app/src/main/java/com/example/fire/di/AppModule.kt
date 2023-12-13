@@ -1,7 +1,6 @@
 package com.example.fire.di
 
 import android.content.Context
-import com.example.fire.data.local.LocalData
 import com.example.fire.utils.Network
 import com.example.fire.utils.NetworkConnectivity
 import dagger.Module
@@ -16,12 +15,6 @@ import kotlin.coroutines.CoroutineContext
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {
-    @Provides
-    @Singleton
-    fun provideLocalRepository(@ApplicationContext context: Context): LocalData {
-        return LocalData(context)
-    }
-
     @Provides
     @Singleton
     fun provideCoroutineContext(): CoroutineContext {

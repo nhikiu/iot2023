@@ -1,6 +1,9 @@
 package com.task.ui.component.login
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.example.fire.data.error.CHECK_YOUR_FIELDS
+import com.example.fire.data.error.PASS_WORD_ERROR
+import com.example.fire.data.error.USER_NAME_ERROR
 import com.task.data.DataRepository
 import com.task.data.Resource
 import com.task.data.dto.login.LoginRequest
@@ -20,9 +23,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
-/**
- * Created by TruyenIT
- */
 @ExperimentalCoroutinesApi
 @ExtendWith(InstantExecutorExtension::class)
 class LoginViewModelTest {

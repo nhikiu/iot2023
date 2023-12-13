@@ -5,10 +5,6 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import javax.inject.Inject
 
-/**
- * Created by TruyenIT
- */
-
 class Network @Inject constructor(val context: Context) : NetworkConnectivity {
     override fun getNetworkInfo(): NetworkInfo? {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
