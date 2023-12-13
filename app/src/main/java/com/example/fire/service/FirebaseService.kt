@@ -1,8 +1,11 @@
 package com.example.fire.service
 
 import android.app.*
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
@@ -11,6 +14,9 @@ import com.example.fire.R
 import com.example.fire.SENSOR
 import com.example.fire.ui.component.splash.SplashActivity
 import com.google.firebase.database.*
+
+import android.os.VibrationEffect
+import android.os.Vibrator
 
 class FirebaseService : Service() {
 
@@ -30,6 +36,7 @@ class FirebaseService : Service() {
         val notification: Notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Hệ thống báo cháy")
             .setContentText("Thông báo lắng nghe trạng thái cháy")
+            .setSilent(true)
             .setSmallIcon(R.drawable.ic_notification)
             .build()
 
@@ -85,9 +92,17 @@ class FirebaseService : Service() {
             0
         )
 
+        val soundUri = Uri.parse("android.resource://$packageName/${R.raw.fire_alarm}")
+
+        val defaultSoundUri = soundUri ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
         val notification: Notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Phát hiện lửa")
             .setContentText("Còi và đèn cảnh báo đang kêu")
+            .setSound(defaultSoundUri)
+            .setLights(R.color.blue, 300, 100)
+            .setVibrate(longArrayOf(0, 1000, 500, 1000))
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setSmallIcon(R.drawable.ic_iot)
             .setContentIntent(pendingIntent)
             .build()
