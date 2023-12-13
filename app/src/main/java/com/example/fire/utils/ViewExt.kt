@@ -5,6 +5,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -214,4 +215,21 @@ fun Uri?.openInBrowser(context: Context) {
 
     val browserIntent = Intent(Intent.ACTION_VIEW, this)
     ContextCompat.startActivity(context, browserIntent, null)
+}
+
+private var currentViewClick: View? = null
+private var mLastClickTime: Long = 0L
+
+fun View.viewPerformClick(timeDelay: Long = 1000, onClick: () -> Unit) {
+    if (this != currentViewClick) {
+        mLastClickTime = 0
+    }
+    currentViewClick = this
+    this.setOnClickListener {
+        this.isEnabled = false
+        onClick.invoke()
+        Handler().postDelayed({
+            this.isEnabled = true
+        }, timeDelay)
+    }
 }

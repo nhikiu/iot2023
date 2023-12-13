@@ -39,4 +39,8 @@
 
     <string name="home">Home</string>
     <string name="dashboard">Dashboard</string>
+    <string name="detect_fire">Phát hiện có lửa đang cháy, đèn và còi cảnh báo đang kêu</string>
+    <string name="turn_off_alarm">Để tắt đèn và còi, vui lòng bấm nút "Tắt" bên dưới</string>
+    <string name="cancel">Huỷ</string>
+    <string name="turn_off">Tắt</string>
 </resources>

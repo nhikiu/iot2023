@@ -1,10 +1,14 @@
 package com.example.fire.ui.component.home
 
+import android.app.ProgressDialog.show
 import android.util.Log
+import com.bumptech.glide.Glide
 import com.example.fire.*
 import com.example.fire.data.dto.iot.MyIoT
+import com.example.fire.databinding.DialogDetectFireBinding
 import com.example.fire.databinding.FragmentHomeBinding
 import com.example.fire.ui.base.BaseFragment
+import com.example.fire.ui.component.splash.DialogDetectFire
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -16,12 +20,26 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
     private lateinit var myIoTList: MutableList<MyIoT>
     private var isOnLed: Boolean = false
     private var isOnBuzzer: Boolean = false
+    private var dialogDetectFire: DialogDetectFire? = null
 
     override fun getDataBinding() = FragmentHomeBinding.inflate(layoutInflater)
 
     override fun onStart() {
         super.onStart()
         myIoTList = mutableListOf()
+    }
+
+    override fun initView() {
+        super.initView()
+        dialogDetectFire = DialogDetectFire(requireContext(), object : DialogDetectFire.OnClickListener {
+            override fun clickCancel() {
+            }
+
+            override fun clickTurnOff() {
+                onClickLED()
+                onClickBuzzer()
+            }
+        })
     }
 
     override fun initData() {
@@ -106,6 +124,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
                 val value = snapshot.getValue(Boolean::class.java) ?: false
                 isOnBuzzer = value
                 checkBuzzerOnOff()
+                checkDetectFire()
                 Log.e("TAG", "onDataChange: BUZZer: $value", )
             }
 
@@ -120,6 +139,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
                 val value = snapshot.getValue(Boolean::class.java) ?: false
                 isOnLed = value
                 checkLedOnOff()
+                checkDetectFire()
                 Log.e("TAG", "onDataChange: LED: $value", )
             }
 
@@ -129,25 +149,11 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
         })
 
         binding.ivOnOffLed.setOnClickListener {
-            isOnLed = !isOnLed
-            val sensorData = mapOf(
-                LED to isOnLed
-            )
-
-            senserRef.updateChildren(sensorData)
-
-            checkLedOnOff()
+            onClickLED()
         }
 
         binding.ivOnOffBuzzer.setOnClickListener {
-            isOnBuzzer = !isOnBuzzer
-            val sensorData = mapOf(
-                BUZZER to isOnBuzzer
-            )
-
-            senserRef.updateChildren(sensorData)
-
-            checkBuzzerOnOff()
+            onClickBuzzer()
         }
     }
 
@@ -170,5 +176,43 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
     override fun addEvent() {
         super.addEvent()
 
+    }
+
+    private fun checkDetectFire() {
+        if (isOnBuzzer && isOnLed) {
+            if (dialogDetectFire != null && !dialogDetectFire!!.isShowing)
+            dialogDetectFire?.apply {
+                setOnDismissListener {}
+                show()
+            }
+        }
+    }
+
+    private fun onClickLED() {
+        val database = FirebaseDatabase.getInstance()
+        val senserRef = database.getReference(SENSOR)
+
+        isOnLed = !isOnLed
+        val sensorData = mapOf(
+            LED to isOnLed
+        )
+
+        senserRef.updateChildren(sensorData)
+
+        checkLedOnOff()
+    }
+
+    private fun onClickBuzzer() {
+        val database = FirebaseDatabase.getInstance()
+        val senserRef = database.getReference(SENSOR)
+
+        isOnBuzzer = !isOnBuzzer
+        val sensorData = mapOf(
+            BUZZER to isOnBuzzer
+        )
+
+        senserRef.updateChildren(sensorData)
+
+        checkBuzzerOnOff()
     }
 }
