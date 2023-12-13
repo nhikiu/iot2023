@@ -72,17 +72,17 @@ while True:
                     send_data_to_firebase_control_sensor(data_control_sensor)
                     fire_detected = True
 
-    if not fire_detected:
-        data_to_send = {
-            'confidence': 0.00,
-            'class': "no-fire"
-        }
-        send_data_to_firebase(data_to_send)
-        data_no_fire = {
-            'buzzer': False,
-            'led': False
-        }
-        send_data_to_firebase_control_sensor(data_no_fire)
+    # if not fire_detected:
+    #     data_to_send = {
+    #         'confidence': 0.00,
+    #         'class': "no-fire"
+    #     }
+    #     send_data_to_firebase(data_to_send)
+    #     data_no_fire = {
+    #         'buzzer': False,
+    #         'led': False
+    #     }
+    #     send_data_to_firebase_control_sensor(data_no_fire)
 
     cv2.imshow("Detect Fire", img)
     cv2.waitKey(1)
