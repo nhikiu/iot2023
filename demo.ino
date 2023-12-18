@@ -109,21 +109,7 @@ void loop() {
   Serial.print("Nồng độ khí CO: ");
   Serial.println(CO_concentration);
 
-  if (CO_concentration > 10) {
-    fireDetected = true;  // Đánh dấu rằng có khói hoặc có khả năng cháy
-  } else {
-    fireDetected = false;  // Không có khói hoặc cháy
-  }
 
-  if (data.temperature > 1) {  // Giả định nhiệt độ cao là có cháy
-    fireDetected = true;
-  }
-
-  if (fireDetected) {    // Bật đèn LED nếu phát hiện có khói hoặc nhiệt độ cao (nghi ngờ có cháy)
-    tone(BUZZER, 1000);  // Bật còi
-  } else {               // Tắt đèn LED nếu không có khói hoặc nhiệt độ bình thường
-    noTone(BUZZER);      // Tắt còi
-  }
 
   if (Firebase.ready() && signupOK && (millis() - sendDataPrevMillis > 1000 || sendDataPrevMillis == 0)) {
     sendDataPrevMillis = millis();
@@ -131,15 +117,14 @@ void loop() {
       if (fbdo.dataType() == "boolean") {
         bool ledStatus = fbdo.boolData();
         if (!ledStatus) digitalWrite(LED, LOW);
-        else {
-          if (fireDetected) {
-            digitalWrite(LED, HIGH);  // Bật đèn LED nếu phát hiện có khói hoặc nhiệt độ cao (nghi ngờ có cháy)
-            tone(BUZZER, 1000);       // Bật còi
-          } else {
-            digitalWrite(LED, LOW);  // Bật đèn LED nếu phát hiện có khói hoặc nhiệt độ cao (nghi ngờ có cháy)
-            tone(BUZZER, 0);         // Bật còi
-          }
-        }
+        else digitalWrite(LED, HIGH);  // Bật đèn LED nếu phát hiện có khói hoặc nhiệt độ cao (nghi ngờ có cháy)
+      }
+    }
+    if (Firebase.RTDB.getBool(&fbdo, "sensor/buzzer")) {
+      if (fbdo.dataType() == "boolean") {
+        bool buzzerStatus = fbdo.boolData();
+        if (!buzzerStatus) tone(BUZZER, 0);
+        else tone(BUZZER, 1000);
       }
     }
     time_t now;
@@ -151,12 +136,7 @@ void loop() {
     time_t timestamp = mktime(&tm);
     String timestampStr = String(timestamp);
 
-    // data1.temperature = String(data.temperature, 2);
-    // data1.humidity = String(data.humidity, 1);
-    // data1.CO_concentration = CO_concentration;
-    // data1.sensorValue = sensorValue;
-    // data1.fireDetected = fireDetected;
-    // data1.timestamp = timestampStr;
+
 
     Firebase.RTDB.setString(&fbdo, "demo/" + timestampStr + "/temperature", String(data.temperature, 2));
     Firebase.RTDB.setString(&fbdo, "demo/" + timestampStr + "/humidity", String(data.humidity, 1));
@@ -164,91 +144,8 @@ void loop() {
     Firebase.RTDB.setFloat(&fbdo, "demo/" + timestampStr + "/gas", sensorValue);
     Firebase.RTDB.setBool(&fbdo, "demo/" + timestampStr + "/fireDetected", fireDetected);
 
-    // Write an Int number on the database path test/int
-    //   if (Firebase.RTDB.setString(&fbdo, "demo/" + timestampStr + "/temperature", String(data.temperature, 2))) {
-    //     Serial.println("PASSED");
-    //     Serial.println("PATH: " + fbdo.dataPath());
-    //     Serial.println("TYPE: " + fbdo.dataType());
-    //   } else {
-    //     Serial.println("FAILED");
-    //     Serial.println("REASON: " + fbdo.errorReason());
-    //   }
-    //   count++;
 
-    //   // Write an Float number on the database path test/float
-    //   if (Firebase.RTDB.setString(&fbdo, "demo/" + timestampStr + "/humidity", String(data.humidity, 1))) {
-    //     Serial.println("PASSED");
-    //     Serial.println("PATH: " + fbdo.dataPath());
-    //     Serial.println("TYPE: " + fbdo.dataType());
-    //   } else {
-    //     Serial.println("FAILED");
-    //     Serial.println("REASON: " + fbdo.errorReason());
-    //   }
-
-    //   if (Firebase.RTDB.setFloat(&fbdo, "demo/" + timestampStr + "/coConcentration", CO_concentration)) {
-    //     Serial.println("PASSED");
-    //     Serial.println("PATH: " + fbdo.dataPath());
-    //     Serial.println("TYPE: " + fbdo.dataType());
-    //   } else {
-    //     Serial.println("FAILED");
-    //     Serial.println("REASON: " + fbdo.errorReason());
-    //   }
-
-    //   if (Firebase.RTDB.setFloat(&fbdo, "demo/" + timestampStr + "/gas", sensorValue)) {
-    //     Serial.println("PASSED");
-    //     Serial.println("PATH: " + fbdo.dataPath());
-    //     Serial.println("TYPE: " + fbdo.dataType());
-    //   } else {
-    //     Serial.println("FAILED");
-    //     Serial.println("REASON: " + fbdo.errorReason());
-    //   }
-
-    //   if (Firebase.RTDB.setBool(&fbdo, "demo/" + timestampStr + "/fireDetected", fireDetected)) {
-    //     Serial.println("PASSED");
-    //     Serial.println("PATH: " + fbdo.dataPath());
-    //     Serial.println("TYPE: " + fbdo.dataType());
-    //   } else {
-    //     Serial.println("FAILED");
-    //     Serial.println("REASON: " + fbdo.errorReason());
-    //   }
-
-    //   // Chuyển timestamp thành String và gửi lên Firebase
-
-    //   if (Firebase.RTDB.setString(&fbdo, "demo/" + timestampStr + "/time", timestampStr)) {
-    //     Serial.println("PASSED");
-    //     Serial.println("PATH: " + fbdo.dataPath());
-    //     Serial.println("TYPE: " + fbdo.dataType());
-    //   } else {
-    //     Serial.println("FAILED");
-    //     Serial.println("REASON: " + fbdo.errorReason());
-    //   }
-    // }
-    // if (sendDataToFirebase(data1)) {
-    //   Serial.println("Data sent to Firebase successfully!");
-    // } else {
-    //   Serial.println("Failed to send data to Firebase");
-    // }
     Serial.println("---");
     delay(1000);
   }
 }
-// bool sendDataToFirebase(const SensorData& data) {
-//   // Tạo một đối tượng JsonObject để xây dựng cấu trúc dữ liệu
-//   FirebaseJson json;
-//   json.set("temperature", data.temperature);
-//   json.set("humidity", data.humidity);
-//   json.set("coConcentration", data.CO_concentration);
-//   json.set("gas", data.sensorValue);
-//   json.set("fireDetected", data.fireDetected);
-//   json.set("time", String(data.timestamp));
-
-//   // Gửi đối tượng JsonObject lên Firebase
-//   if (Firebase.RTDB.setJson(&firebaseData, "demo/" + String(data.timestamp), json)) {
-//     Serial.println("Data sent to Firebase successfully!");
-//     return true;
-//   } else {
-//     Serial.println("Failed to send data to Firebase");
-//     Serial.println("REASON: " + firebaseData.errorReason());
-//     return false;
-//   }
-// }
